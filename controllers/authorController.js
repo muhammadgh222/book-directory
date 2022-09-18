@@ -51,4 +51,48 @@ const getAuthor = async (req, res, next) => {
   }
 };
 
-module.exports = { addAuthor, getAllAuthors, getAuthor };
+const updateAuthor = async (req, res, next) => {
+  try {
+    const updatedAuthor = await Author.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    res.status(201).json({
+      status: "success",
+      updatedAuthor,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "failed",
+      error,
+    });
+  }
+};
+
+const deleteAuthor = async (req, res, next) => {
+  try {
+    await Author.findByIdAndDelete(req.params.id);
+
+    res.status(201).json({
+      status: "success",
+      data: null,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "failed",
+      error,
+    });
+  }
+};
+module.exports = {
+  addAuthor,
+  getAllAuthors,
+  getAuthor,
+  updateAuthor,
+  deleteAuthor,
+};

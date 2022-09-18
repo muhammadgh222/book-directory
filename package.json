@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "watch:js": "parcel watch ./public/js/main.js --out-dir ./public/js --out-file bundle.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   },
   "homepage": "https://github.com/muhammadgh222/book-directory#readme",
   "dependencies": {
+    "axios": "^0.27.2",
     "dotenv": "^16.0.2",
     "ejs": "^3.1.8",
     "express": "^4.18.1",
@@ -27,6 +29,7 @@
     "mongoose": "^6.6.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "parcel-bundler": "^1.12.5"
   }
 }
