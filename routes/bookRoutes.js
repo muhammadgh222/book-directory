@@ -5,10 +5,12 @@ const {
   getBook,
   updateBook,
   deleteBook,
+  uploadImg,
+  resizeImg,
 } = require("../controllers/bookController");
 const router = express.Router();
 
-router.post("/", addBook);
+router.post("/", uploadImg, resizeImg, addBook);
 router.get("/", getAllBooks);
 router.get("/:id", getBook);
 router.patch("/:id", updateBook);

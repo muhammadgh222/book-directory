@@ -11,7 +11,7 @@ const bookSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Author",
     },
-    description: {
+    desc: {
       type: String,
       required: [true, "A book must have a description"],
       default: "",
@@ -32,7 +32,7 @@ const bookSchema = new Schema(
       default: Date.now(),
     },
   },
-  { timestamps: true }
+  {timestamps: true}
 );
 
 const Book = mongoose.model("Book", bookSchema);
