@@ -4549,7 +4549,7 @@ module.exports = require('./lib/axios');
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.addAuthor = void 0;
+exports.addBook = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -4563,29 +4563,60 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var addAuthor = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(title, author, description, pagesNumber, coverImg, publishDate) {
-    var res;
+var addBook = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(form) {
+    var auth, author, authorId, res;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
-            _context.next = 3;
+            author = form.get("author");
+            console.log(author);
+            _context.next = 5;
+            return (0, _axios.default)({
+              method: "GET",
+              url: "http://localhost:3000/api/v1/authors?name=".concat(author)
+            });
+
+          case 5:
+            auth = _context.sent;
+
+            if (!(auth.data.authors.length === 0)) {
+              _context.next = 11;
+              break;
+            }
+
+            _context.next = 9;
+            return (0, _axios.default)({
+              method: "POST",
+              url: "http://localhost:3000/api/v1/authors",
+              data: {
+                name: author
+              }
+            });
+
+          case 9:
+            auth = _context.sent;
+            alert("Author has been added");
+
+          case 11:
+            authorId = auth.data.authors[0]._id;
+            console.log(authorId);
+            _context.next = 15;
             return (0, _axios.default)({
               method: "POST",
               url: "http://localhost:3000/api/v1/books",
               data: {
-                title: title,
-                author: author,
-                description: description,
-                pagesNumber: pagesNumber,
-                coverImg: coverImg,
-                publishDate: publishDate
+                authorId: authorId,
+                form: form
+              },
+              headers: {
+                "Content-Type": "multipart/form-data"
               }
             });
 
-          case 3:
+          case 15:
             res = _context.sent;
             console.log(author);
 
@@ -4593,29 +4624,29 @@ var addAuthor = /*#__PURE__*/function () {
               alert("Book added successfully");
             }
 
-            _context.next = 12;
+            _context.next = 24;
             break;
 
-          case 8:
-            _context.prev = 8;
+          case 20:
+            _context.prev = 20;
             _context.t0 = _context["catch"](0);
             console.log(_context.t0);
             alert(_context.t0.response.data.nessage);
 
-          case 12:
+          case 24:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 8]]);
+    }, _callee, null, [[0, 20]]);
   }));
 
-  return function addAuthor(_x, _x2, _x3, _x4, _x5, _x6) {
+  return function addBook(_x) {
     return _ref.apply(this, arguments);
   };
 }();
 
-exports.addAuthor = addAuthor;
+exports.addBook = addBook;
 },{"axios":"../../node_modules/axios/index.js"}],"addAuthor.js":[function(require,module,exports) {
 "use strict";
 
@@ -4698,7 +4729,6 @@ if (addAuthorForm) {
   addAuthorForm.addEventListener("submit", function (e) {
     e.preventDefault();
     var name = document.querySelector("#name").value;
-    console.log(name);
     (0, _addAuthor.addAuthor)(name);
   });
 }
@@ -4706,15 +4736,20 @@ if (addAuthorForm) {
 if (addBookForm) {
   addBookForm.addEventListener("submit", function (e) {
     e.preventDefault();
-    var title = document.querySelector("#title").value;
-    var author = document.querySelector("#author").value;
-    var desc = document.querySelector("#desc").value;
-    var pagesNumber = document.querySelector("#pagesNumber").value;
-    var coverImg = document.querySelector("#coverImg").value;
-    var publishDate = document.querySelector("#publishDate").value;
-    console.log("1");
-    (0, _addBook.addBook)(title, author, desc, pagesNumber, coverImg, publishDate);
-    console.log("2");
+    var form = new FormData();
+    form.append("title", document.querySelector("#title").value);
+    form.append("author", document.querySelector("#author").value);
+    form.append("desc", document.querySelector("#desc").value);
+    form.append("pagesNumber", document.querySelector("#pagesNumber").value);
+    form.append("coverImg", document.querySelector("#coverImg").files[0]);
+    form.append("publishDate", document.querySelector("#publishDate").value);
+    (0, _addBook.addBook)(form);
+    /*const title = document.querySelector("#title").value;
+      const author = document.querySelector("#author").value;
+    const desc = document.querySelector("#desc").value;
+    const pagesNumber = document.querySelector("#pagesNumber").value * 1;
+    const coverImg = document.querySelector("#coverImg").value;
+    const publishDate = document.querySelector("#publishDate").value;*/
   });
 }
 },{"./addBook":"addBook.js","./addAuthor":"addAuthor.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -4745,7 +4780,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58440" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52406" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -2,24 +2,18 @@
   <h1>Add book</h1>
   <fieldset>
     <legend><span class="number">1</span> Book info</legend>
-
     <label for="name">Title:</label>
     <input type="text" id="title" name="book_title" />
     <label for="name">Author:</label>
-
     <input type="text" id="author" name="author" />
     <label for="name">Description:</label>
-
     <textarea id="desc" name="book_desc"></textarea>
     <label for="name">Page Number:</label>
-
     <input type="number" id="pagesNumber" name="book_pageNumber" />
     <label for="name">Cover Image:</label>
-
-    <input type="text" id="coverImg" name="book_coverImg" />
+    <input type="file" id="coverImg" name="coverImg" accept="image/*" />
     <label for="name">Publish date:</label>
-
-    <input type="text" id="publishDate" name="book_publishDate" />
+    <input type="date" id="publishDate" name="book_publishDate" />
   </fieldset>
 
   <button type="submit">Add book</button>

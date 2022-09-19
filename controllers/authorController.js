@@ -19,7 +19,11 @@ const addAuthor = async (req, res, next) => {
 
 const getAllAuthors = async (req, res, next) => {
   try {
-    const authors = await Author.find({}).populate(
+    const queryObj = { ...req.query };
+    const excludedFields = ["page", "sort", "limit", "fields"];
+    excludedFields.forEach((el) => delete queryObj[el]);
+
+    const authors = await Author.find(queryObj).populate(
       "books",
       "title description pagesNumber coverImg"
     );

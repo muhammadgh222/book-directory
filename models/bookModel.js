@@ -11,7 +11,7 @@ const bookSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Author",
     },
-    description: {
+    desc: {
       type: String,
       required: [true, "A book must have a description"],
       default: "",
@@ -24,7 +24,6 @@ const bookSchema = new Schema(
     coverImg: {
       type: String,
       required: [true, "A book must have a cover image"],
-      default: "https://via.placeholder.com/150",
     },
     publishDate: {
       type: Date,

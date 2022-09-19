@@ -1,28 +1,46 @@
+const multer = require("multer");
+const sharp = require("sharp");
 const Author = require("../models/authorModel");
 const Book = require("../models/bookModel");
 
+/*const multerStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/img");
+  },
+  filename: (req, file, cb) => {
+    const ext = file.mimetype.split("/")[1];
+    cb(null, `book-${Math.random()}.${ext}`);
+  },
+});*/
+
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(() => {
+      console.log("Please upload image");
+    }, false);
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+const uploadImg = upload.single("coverImg");
+
 const addBook = async (req, res, next) => {
   try {
-    const {title, author, description, pagesNumber, coverImg, publishDate} =
-      req.body;
-    const newBook = await Book.create({
-      title,
-      author,
-      description,
-      pagesNumber,
-      coverImg,
-      publishDate,
-    });
+    let { authorId } = req.body;
+    console.log(req.files);
 
-    const bookAuthor = await Author.findOne({name: author});
-
-    if (!bookAuthor) {
-      res.status(404).json({
-        status: "failed",
-        message: "Please create the author first",
-      });
-    }
-
+    const bookAuthor = await Author.findById(authorId);
+    console.log(bookAuthor);
+    if (req.file) req.body.coverImg = req.file.filename;
+    const newBook = await Book.create(req.body);
     //  const bookAuthor = await Author.findById(author);
 
     bookAuthor.books.push(newBook);
@@ -33,6 +51,7 @@ const addBook = async (req, res, next) => {
       newBook,
     });
   } catch (error) {
+    console.log(error);
     res.status(400).json({
       status: "failed",
       error: error.message,
@@ -107,4 +126,11 @@ const deleteBook = async (req, res, next) => {
   }
 };
 
-module.exports = {addBook, getAllBooks, getBook, updateBook, deleteBook};
+module.exports = {
+  addBook,
+  getAllBooks,
+  getBook,
+  updateBook,
+  deleteBook,
+  uploadImg,
+};
